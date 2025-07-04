@@ -1,5 +1,5 @@
 from level import Level
-from vehicle import Vehicle
+from vehicle.vehicle import Vehicle
 
 class ParkingLot():
     def __init__(self):

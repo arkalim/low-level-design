@@ -1,10 +1,10 @@
-from vehicle_type import VehicleType
 from parking_lot import ParkingLot
 from level import Level
 
-from car import Car
-from bus import Bus
-from motorcycle import Motorcycle
+from vehicle.vehicle_type import VehicleType
+from vehicle.car import Car
+from vehicle.bus import Bus
+from vehicle.motorcycle import Motorcycle
 
 def main():
     # create a parking lot

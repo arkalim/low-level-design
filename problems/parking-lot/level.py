@@ -1,7 +1,7 @@
 from typing import Optional
 
-from vehicle_type import VehicleType
-from vehicle import Vehicle
+from vehicle.vehicle_type import VehicleType
+from vehicle.vehicle import Vehicle
 from spot import Spot
 
 class Level():
