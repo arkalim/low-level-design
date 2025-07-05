@@ -47,7 +47,7 @@ def main():
             print(f">>> Failed to park {vehicle.type.name} with license {vehicle.license} in the parking lot")
 
     # wait for a while
-    time.sleep(10)
+    time.sleep(3)
 
     # unpark the vehicles
     for vehicle in vehicle_billing_map:

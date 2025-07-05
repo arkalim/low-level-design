@@ -12,7 +12,7 @@ class Ticket:
         self.unpark_timestamp = None
         self.billing_strategy = billing_strategy
 
-    def getDuration(self) -> int:
+    def get_duration(self) -> int:
         if self.unpark_timestamp is None:
             return int(time()) - self.park_timestamp
         return self.unpark_timestamp - self.park_timestamp
