@@ -1,3 +1,4 @@
+import time
 from parking_lot import ParkingLot
 from level import Level
 
@@ -5,6 +6,9 @@ from vehicle.vehicle_type import VehicleType
 from vehicle.car import Car
 from vehicle.bus import Bus
 from vehicle.motorcycle import Motorcycle
+
+from billing.hourly_billing import HourlyBilling
+from billing.overnight_billing import OvernightBilling
 
 def main():
     # create a parking lot
@@ -24,10 +28,19 @@ def main():
     motorcycle_2 = Motorcycle("MOT2")
 
     # park the vehicles
-    [parking_lot.park(vehicle) for vehicle in [car_1, car_2, bus_1, bus_2, motorcycle_1, motorcycle_2]]
+    [parking_lot.park(vehicle, HourlyBilling()) for vehicle in [car_1, car_2, motorcycle_1, motorcycle_2]]
+    [parking_lot.park(vehicle, OvernightBilling()) for vehicle in [bus_1, bus_2]]
+
+    # wait for a while
+    time.sleep(10)
 
     # unpark the vehicles
     [parking_lot.unpark(vehicle) for vehicle in [car_1, car_2, bus_1, bus_2, motorcycle_1, motorcycle_2]]
+
+    # get bills for the vehicles
+    for vehicle in [car_1, car_2, bus_1, bus_2, motorcycle_1, motorcycle_2]:
+        bill = parking_lot.get_bill(vehicle)
+        print(f">>> Bill for {vehicle.license} = ${bill}")
 
 if __name__ == "__main__":
     main()

@@ -10,14 +10,13 @@ class Level():
         for vehicle_type, spot_count in spot_dist.items():
             self.spots[vehicle_type] = [Spot(i+1, vehicle_type) for i in range(spot_count)]
 
-    def park(self, vehicle: Vehicle) -> Optional[int]:
+    def park(self, vehicle: Vehicle) -> Optional[Spot]:
         for spot in self.spots[vehicle.type]:
             if spot.park(vehicle):
-                return spot.number
-        return
+                return spot
     
-    def unpark(self, vehicle: Vehicle) -> Optional[int]:
+    def unpark(self, vehicle: Vehicle) -> Optional[Spot]:
         for spot in self.spots[vehicle.type]:
             if spot.vehicle == vehicle:
                 spot.unpark()
-                return spot.number
+                return spot
