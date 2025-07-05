@@ -9,14 +9,15 @@ from vehicle.motorcycle import Motorcycle
 
 from billing.hourly_billing import HourlyBilling
 from billing.overnight_billing import OvernightBilling
+from billing.daily_billing import DailyBilling
 
 def main():
     # create a parking lot
     parking_lot = ParkingLot()
 
     # add 2 levels totalling 5 car, 2 motorcycle and 1 bus spots
-    parking_lot.add_level(Level({VehicleType.car: 3, VehicleType.motorcycle: 1}))
-    parking_lot.add_level(Level({VehicleType.car: 2, VehicleType.bus: 1, VehicleType.motorcycle: 1}))
+    parking_lot.add_level(Level("A", {VehicleType.car: 3, VehicleType.motorcycle: 1}))
+    parking_lot.add_level(Level("B", {VehicleType.car: 2, VehicleType.bus: 1, VehicleType.motorcycle: 1}))
 
     # create vehicles
     car_1 = Car("CAR1")
@@ -27,20 +28,34 @@ def main():
     bus_2 = Bus("BUS2")
     motorcycle_2 = Motorcycle("MOT2")
 
+    # billing option chosen by each vehicle
+    vehicle_billing_map = {
+        car_1: HourlyBilling(),
+        car_2: DailyBilling(),
+        motorcycle_1: OvernightBilling(),
+        motorcycle_2: DailyBilling(),
+        bus_1: OvernightBilling(),
+        bus_2: HourlyBilling(),
+    }
+
     # park the vehicles
-    [parking_lot.park(vehicle, HourlyBilling()) for vehicle in [car_1, car_2, motorcycle_1, motorcycle_2]]
-    [parking_lot.park(vehicle, OvernightBilling()) for vehicle in [bus_1, bus_2]]
+    for vehicle, billing_strategy in vehicle_billing_map.items():
+        ticket = parking_lot.park(vehicle, billing_strategy)
+        if ticket:
+            print(f">>> Parked {vehicle.type.name} with license {vehicle.license} at spot {ticket.spot.id}")
+        else:
+            print(f">>> Failed to park {vehicle.type.name} with license {vehicle.license} in the parking lot")
 
     # wait for a while
     time.sleep(10)
 
     # unpark the vehicles
-    [parking_lot.unpark(vehicle) for vehicle in [car_1, car_2, bus_1, bus_2, motorcycle_1, motorcycle_2]]
-
-    # get bills for the vehicles
-    for vehicle in [car_1, car_2, bus_1, bus_2, motorcycle_1, motorcycle_2]:
-        bill = parking_lot.get_bill(vehicle)
-        print(f">>> Bill for {vehicle.license} = ${bill}")
+    for vehicle in vehicle_billing_map:
+        ticket = parking_lot.unpark(vehicle)
+        if ticket:
+            print(f">>> Unparked {vehicle.type.name} with license {vehicle.license} from spot {ticket.spot.id} | Bill: ${ticket.get_bill()}")
+        else:
+            print(f">>> Failed to unpark {vehicle.type.name} with license {vehicle.license} from the parking lot")
 
 if __name__ == "__main__":
     main()

@@ -3,8 +3,8 @@ from vehicle.vehicle_type import VehicleType
 from vehicle.vehicle import Vehicle
 
 class Spot():
-    def __init__(self, number: int, type: VehicleType):
-        self.number = number
+    def __init__(self, id: str, type: VehicleType):
+        self.id = id
         self.type = type
         self.vehicle: Optional[Vehicle] = None
 
